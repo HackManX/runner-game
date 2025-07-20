@@ -188,43 +188,43 @@ function useGameLogic() {
     };
 
     // Touch controls for mobile
-  const handleTouchStart = (e) => {
-    // If game over and announcement is done, restart game
-    if (
-      isMobile &&
-      (gameState.status === "game over" || gameState.status === "idle") &&
-      announcementDone
-    ) {
-      startGame();
-      return;
-    }
+    const handleTouchStart = (e) => {
+      // If game over and announcement is done, restart game
+      if (
+        isMobile &&
+        (gameState.status === "game over" || gameState.status === "idle") &&
+        announcementDone
+      ) {
+        startGame();
+        return;
+      }
 
-    // Only allow controls during running
-    if (gameState.status !== "running") return;
+      // Only allow controls during running
+      if (gameState.status !== "running") return;
 
-    const now = Date.now();
-    const isDoubleTap = now - lastTouchTimeRef.current < 300;
-    touchStartXRef.current = e.touches[0].clientX;
+      const now = Date.now();
+      const isDoubleTap = now - lastTouchTimeRef.current < 300;
+      touchStartXRef.current = e.touches[0].clientX;
 
-    if (isDoubleTap) {
-      togglePause();
-      return;
-    }
+      if (isDoubleTap) {
+        togglePause();
+        return;
+      }
 
-    lastTouchTimeRef.current = now;
-  };
+      lastTouchTimeRef.current = now;
+    };
 
     const handleTouchEnd = (e) => {
       if (gameState.status !== "running") return;
 
-       if (
-      isMobile &&
-      (gameState.status === "game over" || gameState.status === "idle") &&
-      announcementDone
-    ) {
-      startGame();
-      return;
-    }
+      if (
+        isMobile &&
+        (gameState.status === "game over" || gameState.status === "idle") &&
+        announcementDone
+      ) {
+        startGame();
+        return;
+      }
 
       const touchEndX = e.changedTouches[0].clientX;
       const touchDiff = touchEndX - touchStartXRef.current;
@@ -448,7 +448,7 @@ function useGameLogic() {
       setAnnouncementDone(false);
       window.speechSynthesis.cancel();
       const desktopText =
-        "Welcome to Sound Runner. Please follow the instructions carefully. Press space bar to start the game. Use space bar to switch lanes. Triple press space to pause. Cars approaching from either side will make sounds, you can hear through different sides of your headset. For each successful pass you score 1 point! Wear headphones for the best experience. At starting, car is at left side. Always keep in mind which track you are in. Press space bar and start the game.";
+        "Welcome to Sound Runner. Please follow the instructions carefully. Press space bar to start the game. Use space bar to switch lanes. Double press space to pause and  single  press  on  space   to  continue. Cars approaching from either side will make sounds, you can hear through different sides of your headset. For each successful pass you score 1 point! Wear headphones for the best experience. At starting, car is at left side. Always keep in mind which track you are in. Press space bar and start the game.";
       const mobileText =
         "Welcome to Sound Runner. Please follow the instructions carefully. Tap anywhere to start the game. Tap to switch lanes. Double tap to pause. Cars approaching from either side will make sounds, you can hear through different sides of your headset. For each successful pass you score 1 point! Wear headphones for the best experience. At starting, car is at left side. Always keep in mind which track you are in. Tap anywhere and start the game.";
       const utter = new window.SpeechSynthesisUtterance(
@@ -552,19 +552,6 @@ export default function App() {
         </p>
       </div>
 
-      <div
-        className={`text-lg md:text-xl font-bold px-4 py-1 rounded-full mb-2 ${
-          status === "running"
-            ? "bg-green-600 animate-pulse"
-            : status === "paused"
-            ? "bg-yellow-600"
-            : status === "game over"
-            ? "bg-red-600"
-            : "bg-blue-600"
-        }`}
-      >
-        {status.toUpperCase()}
-      </div>
 
       {/* Make lanes longer and thinner */}
       <div className="relative flex-1 w-[60vw] max-w-[180px] min-w-[100px] h-[80vh] max-h-[700px] bg-gray-800 rounded-lg border-4 border-gray-700 overflow-hidden">
@@ -596,26 +583,7 @@ export default function App() {
         ))}
       </div>
 
-      <div className="mt-2">
-        {(status === "idle" || status === "game over") && (
-          <div className="px-4 py-2 md:px-6 md:py-3 bg-blue-600 rounded-lg text-lg md:text-xl font-bold">
-            {!announcementDone
-              ? "Announcing instructions..."
-              : isMobile
-              ? "Tap anywhere to Start"
-              : "Press SPACE to Start"}
-          </div>
-        )}
-
-        {(status === "running" || status === "paused") && (
-          <button
-            onClick={togglePause}
-            className="px-4 py-2 md:px-6 md:py-3 bg-yellow-600 hover:bg-yellow-500 rounded-lg text-lg md:text-xl font-bold"
-          >
-            {status === "running" ? "Pause" : "Resume"} (Double Tap)
-          </button>
-        )}
-      </div>
+   
 
       <style>{`
         .bg-repeating-dash {
