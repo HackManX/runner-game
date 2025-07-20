@@ -1,4 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+const isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
+  navigator.userAgent
+);
 
 // --- Custom Hook for Game Logic ---
 function useGameLogic() {
@@ -32,7 +35,7 @@ function useGameLogic() {
   // Audio Setup
   const setupAudio = useCallback(async () => {
     try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const AudioContext = window.AudioContext || window.webkit.AudioContext;
       audioContextRef.current = new AudioContext();
 
       const response = await fetch("/car.wav");
@@ -414,22 +417,25 @@ function useGameLogic() {
   useEffect(() => {
     if (announcementDone) return;
 
-    let announced = false; // Prevent multiple triggers
+    let announced = false;
 
     const announce = () => {
       if (announced) return;
       announced = true;
       setAnnouncementDone(false);
       window.speechSynthesis.cancel();
+      const desktopText =
+        "Welcome to Sound Runner. Please follow the instructions carefully. Press space bar to start the game. Use space bar to switch lanes. Triple press space to pause. Cars approaching from either side will make sounds, you can hear through different sides of your headset. For each successful pass you score 1 point! Wear headphones for the best experience. At starting, car is at left side. Always keep in mind which track you are in. Press space bar and start the game.";
+      const mobileText =
+        "Welcome to Sound Runner. Please follow the instructions carefully. Tap anywhere to start the game. Tap to switch lanes. Double tap to pause. Cars approaching from either side will make sounds, you can hear through different sides of your headset. For each successful pass you score 1 point! Wear headphones for the best experience. At starting, car is at left side. Always keep in mind which track you are in. Tap anywhere and start the game.";
       const utter = new window.SpeechSynthesisUtterance(
-        "Welcome to Sound Runner. Please  follow  the  instructions  carefully.  Press space bar to start the game. Use space bar to switch lanes. Triple press space to pause. Cars approaching from either  sides  will  make  sounds, you   can    hear   through   different  sides  of  headset. For each successful pass you score 1 point! Wear headphones for the best experience. At starting, car is at left side. Always keep in mind which track you are in. Press space bar and start the game."
+        isMobile ? mobileText : desktopText
       );
       utter.onend = () => setAnnouncementDone(true);
       window.speechSynthesis.speak(utter);
     };
 
     const handler = (e) => {
-      // Only announce if not already done and not already started
       if (
         !announcementDone &&
         !announced &&
@@ -457,7 +463,12 @@ function useGameLogic() {
       lastStatusRef.current !== "game over" &&
       gameState.status === "game over"
     ) {
-      speak("OH NO ! YOU CRASHED ! YOUR FINAL SCORE  IS  " + gameState.score + ".  Press  space  bar to restart.", "high");
+      speak(
+        "OH NO ! YOU CRASHED ! YOUR FINAL SCORE  IS  " +
+          gameState.score +
+          ".  Press  space  bar to restart.",
+        "high"
+      );
     }
     lastStatusRef.current = gameState.status;
   }, [gameState.status, speak]);
@@ -487,6 +498,11 @@ export default function App() {
   } = useGameLogic();
   const { status, score, playerLane, cars } = gameState;
 
+  const isMobile =
+    /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
+      navigator.userAgent
+    );
+
   return (
     <div
       ref={gameAreaRef}
@@ -495,14 +511,13 @@ export default function App() {
       style={{ padding: 5, margin: 0 }}
     >
       <h1 className="text-2xl md:text-4xl font-bold mb-2 mt-2">
-        Audio Racer 🚗
+        Sound Runner 🚗
       </h1>
 
       <div className="text-center mb-2">
         <p className="text-lg md:text-xl">
           Score: <span className="font-mono text-yellow-300">{score}</span>
         </p>
-    
       </div>
 
       <div
@@ -552,9 +567,11 @@ export default function App() {
       <div className="mt-2">
         {(status === "idle" || status === "game over") && (
           <div className="px-4 py-2 md:px-6 md:py-3 bg-blue-600 rounded-lg text-lg md:text-xl font-bold">
-            {announcementDone
-              ? "Press SPACE to Start"
-              : "Tap or press any key to hear instructions"}
+            {!announcementDone
+              ? "Announcing instructions..."
+              : isMobile
+              ? "Tap anywhere to Start"
+              : "Press SPACE to Start"}
           </div>
         )}
 
