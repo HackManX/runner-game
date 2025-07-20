@@ -1,4 +1,4 @@
-# 🎧 SoundWalker – Audio-Based Game for the Visually Impaired
+# 🎧 Audio Racer – Audio-Based Game for the Visually Impaired
 
 A unique and inclusive audio-only game created using **Vite + React + Tailwind CSS**, designed especially for the visually impaired. Players navigate traffic lanes using stereo sound cues and make decisions with a simple tap or key press.
 
