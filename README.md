@@ -28,7 +28,7 @@ A unique and inclusive audio-only game created using **Vite + React + Tailwind C
 - **Frontend Framework**: Vite + React
 - **Styling**: Tailwind CSS
 - **Audio**: HTML5 `<audio>` + stereo effects
-- **Deployment Ready**: Works with Vercel / Netlify
+- **Deployment Ready**: Works with Vercel
 
 ---
 
@@ -36,15 +36,14 @@ A unique and inclusive audio-only game created using **Vite + React + Tailwind C
 
 src/
 ├── assets/ # Sound files (car, music)
-├── components/ # Game visuals (basic), sound manager
-├── hooks/ # Custom logic like useGameLogic
+
 ├── App.jsx # Main app logic
+
 ├── main.jsx # Entry point
+
 ├── index.css # Tailwind styles
 
-yaml
-Copy
-Edit
+
 
 ---
 
@@ -53,27 +52,19 @@ Edit
 ### 📥 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/soundwalker-game.git
-cd soundwalker-game
-Replace the URL with your actual GitHub repo URL.
+git clone git clone https://github.com/HackManX/runner-game.git
 
 📦 2. Install Dependencies
-bash
-Copy
-Edit
 npm install
+
 🧪 3. Run in Development Mode
-bash
-Copy
-Edit
 npm run dev
-Visit http://localhost:5173 in your browser or mobile device.
 
 🎮 How to Play
 You’ll hear vehicle sounds from either left or right.
 
-Tap anywhere (mobile) or press any key (desktop) to switch lanes.
+Tap anywhere (mobile) or press spacebar key (desktop) to switch lanes.
 
 Avoid the approaching car by being in the opposite lane.
 
-Game resets automatically on collision.
+
