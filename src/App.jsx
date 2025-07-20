@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-const isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
-  navigator.userAgent
-);
+const isMobile =
+  /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
+    navigator.userAgent
+  );
 
 // --- Custom Hook for Game Logic ---
 function useGameLogic() {
@@ -435,7 +436,9 @@ function useGameLogic() {
       window.speechSynthesis.speak(utter);
     };
 
+    // Handler for both desktop and mobile
     const handler = (e) => {
+      // Only announce if not already done and not already started
       if (
         !announcementDone &&
         !announced &&
@@ -445,9 +448,12 @@ function useGameLogic() {
       }
     };
 
-    window.addEventListener("keydown", handler, { once: true });
-    window.addEventListener("mousedown", handler, { once: true });
-    window.addEventListener("touchstart", handler, { once: true });
+    // Only listen for user gesture if announcement not done
+    if (!announcementDone) {
+      window.addEventListener("keydown", handler, { once: true });
+      window.addEventListener("mousedown", handler, { once: true });
+      window.addEventListener("touchstart", handler, { once: true });
+    }
 
     return () => {
       window.removeEventListener("keydown", handler);
@@ -498,10 +504,7 @@ export default function App() {
   } = useGameLogic();
   const { status, score, playerLane, cars } = gameState;
 
-  const isMobile =
-    /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
-      navigator.userAgent
-    );
+
 
   return (
     <div
