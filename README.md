@@ -68,9 +68,8 @@ A unique and inclusive audio-only game created using **Vite + React + Tailwind C
 
 ## 🚀 Getting Started
 
-### 📥 1. Clone the Repository
-
 ```bash
+### 📥 1. Clone the Repository
 git clone git clone https://github.com/HackManX/runner-game.git
 
 📦 2. Install Dependencies
