@@ -188,18 +188,31 @@ function useGameLogic() {
     };
 
     // Touch controls for mobile
-    const handleTouchStart = (e) => {
-      const now = Date.now();
-      const isDoubleTap = now - lastTouchTimeRef.current < 300;
-      touchStartXRef.current = e.touches[0].clientX;
+  const handleTouchStart = (e) => {
+    // If game over and announcement is done, restart game
+    if (
+      isMobile &&
+      (gameState.status === "game over" || gameState.status === "idle") &&
+      announcementDone
+    ) {
+      startGame();
+      return;
+    }
 
-      if (isDoubleTap) {
-        togglePause();
-        return;
-      }
+    // Only allow controls during running
+    if (gameState.status !== "running") return;
 
-      lastTouchTimeRef.current = now;
-    };
+    const now = Date.now();
+    const isDoubleTap = now - lastTouchTimeRef.current < 300;
+    touchStartXRef.current = e.touches[0].clientX;
+
+    if (isDoubleTap) {
+      togglePause();
+      return;
+    }
+
+    lastTouchTimeRef.current = now;
+  };
 
     const handleTouchEnd = (e) => {
       if (gameState.status !== "running") return;
