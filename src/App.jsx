@@ -448,17 +448,26 @@ function useGameLogic() {
       }
     };
 
-    // Only listen for user gesture if announcement not done
+    // Use capture phase to ensure this runs before other handlers
     if (!announcementDone) {
-      window.addEventListener("keydown", handler, { once: true });
-      window.addEventListener("mousedown", handler, { once: true });
-      window.addEventListener("touchstart", handler, { once: true });
+      window.addEventListener("keydown", handler, {
+        once: true,
+        capture: true,
+      });
+      window.addEventListener("mousedown", handler, {
+        once: true,
+        capture: true,
+      });
+      window.addEventListener("touchend", handler, {
+        once: true,
+        capture: true,
+      });
     }
 
     return () => {
-      window.removeEventListener("keydown", handler);
-      window.removeEventListener("mousedown", handler);
-      window.removeEventListener("touchstart", handler);
+      window.removeEventListener("keydown", handler, { capture: true });
+      window.removeEventListener("mousedown", handler, { capture: true });
+      window.removeEventListener("touchend", handler, { capture: true });
     };
   }, [announcementDone, gameState.status, setAnnouncementDone]);
 
@@ -503,8 +512,6 @@ export default function App() {
     speak,
   } = useGameLogic();
   const { status, score, playerLane, cars } = gameState;
-
-
 
   return (
     <div
