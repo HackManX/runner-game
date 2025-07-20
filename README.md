@@ -32,16 +32,35 @@ A unique and inclusive audio-only game created using **Vite + React + Tailwind C
 
 ---
 
+## 🎮 How to Play
+- You’ll hear vehicle sounds from either left or right.
+- Tap anywhere (mobile) or press spacebar key (desktop) to switch lanes.
+- Avoid the approaching car by being in the opposite lane.
+
+
 ## 📁 Folder Structure
 
-src/
-├── assets/ # Sound files (car, music)
+.
+├── node_modules
 
-├── App.jsx # Main app logic
+├── public                # Static files 
 
-├── main.jsx # Entry point
+├── src                   # React source files
 
-├── index.css # Tailwind styles
+│   ├── assets
+
+│   └── App.jsx           # Main app component
+
+├── package.json
+
+├── package.lock.json
+
+├── vite.config.js
+
+├── index.html
+
+└── README.md
+
 
 
 
@@ -60,11 +79,5 @@ npm install
 🧪 3. Run in Development Mode
 npm run dev
 
-🎮 How to Play
-You’ll hear vehicle sounds from either left or right.
-
-Tap anywhere (mobile) or press spacebar key (desktop) to switch lanes.
-
-Avoid the approaching car by being in the opposite lane.
 
 
