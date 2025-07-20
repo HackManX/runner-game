@@ -217,6 +217,15 @@ function useGameLogic() {
     const handleTouchEnd = (e) => {
       if (gameState.status !== "running") return;
 
+       if (
+      isMobile &&
+      (gameState.status === "game over" || gameState.status === "idle") &&
+      announcementDone
+    ) {
+      startGame();
+      return;
+    }
+
       const touchEndX = e.changedTouches[0].clientX;
       const touchDiff = touchEndX - touchStartXRef.current;
 
